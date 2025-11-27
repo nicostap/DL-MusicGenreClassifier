@@ -1,0 +1,3 @@
+IF NOT EXIST formatted MKDIR formatted
+
+FOR %%f IN ("downloads\*.webm") DO ffmpeg -i "%%f" -vn -ar 22050 -ac 1 -b:a 352k -c:a pcm_s16le "formatted\%%~nf.wav"
