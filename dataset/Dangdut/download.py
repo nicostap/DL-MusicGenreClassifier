@@ -28,25 +28,37 @@ def download_audio(youtube_urls, output_path):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'noplaylist': True,
-        # 'postprocessors': [{
-        #     'key': 'FFmpegExtractAudio',
-        #     'preferredcodec': 'wav',
-        #     'preferredquality': '352',
-        # }],
-        # 'postprocessor_args': [
-        #     '-acodec', 'pcm_s16le',
-        #     '-ar', 20500,
-        #     '-ac', '1'
-        # ],
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download(youtube_urls)
 
 
+def extract_video_id(youtube_url):
+    """Extracts the video ID from a YouTube URL.
+
+    Args:
+        youtube_url (str): The YouTube video URL.
+    Returns:
+        str: The extracted video ID.
+    """
+    return youtube_url.split("v=")[-1].split("&")[0]
+
+
+def main(csv_path, save_dir):
+    # Read CSV and download audio files
+    data = read_csv(csv_path)
+    os.makedirs(save_dir, exist_ok=True)
+    for row in data:
+        index = row["no"]
+        link = row["link"]
+        save_path = os.path.join(save_dir, f"dangdut.{index}.%(ext)s")
+        download_audio([link], save_path)
+
+
 if __name__ == "__main__":
-    file_path = 'song_links.csv'
-    data = read_csv(file_path)
-    links = [row['link'] for row in data]
-    os.makedirs("downloads", exist_ok=True)
-    download_audio(links, 'downloads/%(title)s.%(ext)s')
+    # Configuration
+    csv_path = "song_links.csv"
+    save_dir = "downloads"
+
+    main(csv_path, save_dir)
