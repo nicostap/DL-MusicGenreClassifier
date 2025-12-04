@@ -45,12 +45,12 @@ def predict_file():
     X = preprocess_audio(y, sr, scaler)
     preds = model.predict(X)
     avg_preds = np.mean(preds, axis=0)
-
+    dict_avg_preds = dict(zip(LABELS, avg_preds))
     idx = np.argmax(avg_preds)
 
     return jsonify({
         "genre": LABELS[idx],
-        "probabilities": preds.tolist()
+        "probabilities": dict_avg_preds
     })
 
 
@@ -64,9 +64,10 @@ def predict_youtube():
     X = preprocess_audio(y, sr, scaler)
     preds = model.predict(X)
     avg_preds = np.mean(preds, axis=0)
+    dict_avg_preds = dict(zip(LABELS, avg_preds))
     idx = np.argmax(avg_preds)
 
     return jsonify({
         "genre": LABELS[idx],
-        "probabilities": preds.tolist()
+        "probabilities": dict_avg_preds
     })
