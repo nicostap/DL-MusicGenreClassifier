@@ -1,20 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Music Genre Classifier — Kelompok 1 Deep Learning</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.4/css/pico.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.4/css/pico.min.css"
+    />
     <style>
-      body { padding: 2rem; }
-      .grid-2 { gap: 1.5rem; }
-      .result-card { padding: 1rem; }
-      .muted { color: #6b7280; }
-      .probs { margin-top: .5rem; }
-      .prob-row { display:flex; align-items:center; gap:.5rem; }
-      .prob-label { width:6rem; font-size: .95rem; }
-      .spinner { display:inline-block; width:1rem; height:1rem; border:2px solid rgba(0,0,0,0.1); border-top-color:currentColor; border-radius:50%; animation:spin 1s linear infinite; }
-      @keyframes spin {to{transform:rotate(360deg)}}
+      body {
+        padding: 2rem;
+      }
+      .grid-2 {
+        gap: 1.5rem;
+      }
+      .result-card {
+        padding: 1rem;
+      }
+      .muted {
+        color: #6b7280;
+      }
+      .probs {
+        margin-top: 0.5rem;
+      }
+      .prob-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .prob-label {
+        width: 6rem;
+        font-size: 0.95rem;
+      }
+      .spinner {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
   <body>
@@ -28,11 +60,26 @@
         <div class="grid grid-2">
           <article>
             <h2>Upload MP3</h2>
-            <p class="muted">Choose an MP3 file and the site will send it to the server.</p>
+            <p class="muted">
+              Choose an MP3 file and the site will send it to the server.
+            </p>
             <form id="file-form">
               <label for="file-input">MP3 file</label>
-              <input id="file-input" name="file" type="file" accept="audio/*,.mp3" required>
-              <div style="display:flex;gap:.5rem;margin-top:.5rem;align-items:center;">
+              <input
+                id="file-input"
+                name="file"
+                type="file"
+                accept="audio/*,.mp3"
+                required
+              />
+              <div
+                style="
+                  display: flex;
+                  gap: 0.5rem;
+                  margin-top: 0.5rem;
+                  align-items: center;
+                "
+              >
                 <button type="submit" id="file-submit">Classify file</button>
                 <span id="file-status" class="muted"></span>
               </div>
@@ -41,11 +88,27 @@
 
           <article>
             <h2>From YouTube</h2>
-            <p class="muted">Paste a YouTube video URL. The server will fetch and classify the audio.</p>
+            <p class="muted">
+              Paste a YouTube video URL. The server will fetch and classify the
+              audio.
+            </p>
             <form id="yt-form">
               <label for="yt-url">YouTube URL</label>
-              <input id="yt-url" name="url" type="url" placeholder="https://youtube.com/watch?v=..." required>
-              <div style="display:flex;gap:.5rem;margin-top:.5rem;align-items:center;">
+              <input
+                id="yt-url"
+                name="url"
+                type="url"
+                placeholder="https://youtube.com/watch?v=..."
+                required
+              />
+              <div
+                style="
+                  display: flex;
+                  gap: 0.5rem;
+                  margin-top: 0.5rem;
+                  align-items: center;
+                "
+              >
                 <button type="submit" id="yt-submit">Classify YouTube</button>
                 <span id="yt-status" class="muted"></span>
               </div>
@@ -54,44 +117,57 @@
         </div>
       </section>
 
-      <section style="margin-top:1.5rem;">
+      <section style="margin-top: 1.5rem">
         <h2>Result</h2>
         <div id="result" class="card result-card">
-          <p class="muted">No prediction yet. Upload a file or submit a YouTube link.</p>
+          <p class="muted">
+            No prediction yet. Upload a file or submit a YouTube link.
+          </p>
         </div>
       </section>
 
-    <footer style="margin-top:2rem;">
-      <div class="muted small">
-        <p>Upload an MP3 or paste a YouTube link above to get a quick genre prediction.</p>
-        <div style="display:flex;justify-content:space-between;gap:1rem;margin-top:.5rem;">
-        <span>© Kelompok 1 Deep Learning</span>
-        <span>Supports MP3 & common audio formats</span>
+      <footer style="margin-top: 2rem">
+        <div class="muted small">
+          <p>
+            Upload an MP3 or paste a YouTube link above to get a quick genre
+            prediction.
+          </p>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              gap: 1rem;
+              margin-top: 0.5rem;
+            "
+          >
+            <span>© Kelompok 1 Deep Learning</span>
+            <span>Supports MP3 & common audio formats</span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     </main>
 
     <script>
-      const baseURL = 'http://localhost:5000';
+      const baseURL = "http://localhost:5000";
 
-      const fileForm = document.getElementById('file-form');
-      const fileInput = document.getElementById('file-input');
-      const fileStatus = document.getElementById('file-status');
-      const fileSubmit = document.getElementById('file-submit');
+      const fileForm = document.getElementById("file-form");
+      const fileInput = document.getElementById("file-input");
+      const fileStatus = document.getElementById("file-status");
+      const fileSubmit = document.getElementById("file-submit");
 
-      const ytForm = document.getElementById('yt-form');
-      const ytUrl = document.getElementById('yt-url');
-      const ytStatus = document.getElementById('yt-status');
-      const ytSubmit = document.getElementById('yt-submit');
+      const ytForm = document.getElementById("yt-form");
+      const ytUrl = document.getElementById("yt-url");
+      const ytStatus = document.getElementById("yt-status");
+      const ytSubmit = document.getElementById("yt-submit");
 
-      const resultEl = document.getElementById('result');
+      const resultEl = document.getElementById("result");
 
       function setLoading(el, isLoading) {
         if (isLoading) {
-          el.innerHTML = '<span class="spinner" aria-hidden="true"></span> Processing...';
+          el.innerHTML =
+            '<span class="spinner" aria-hidden="true"></span> Processing...';
         } else {
-          el.textContent = '';
+          el.textContent = "";
         }
       }
 
@@ -101,7 +177,7 @@
           return;
         }
 
-        const genre = data.genre || 'Unknown';
+        const genre = data.genre || "Unknown";
         const probs = data.probabilities || [];
 
         const html = [];
@@ -109,25 +185,25 @@
         html.push('<div class="muted">Probabilities</div>');
         html.push('<div class="probs">');
 
-        probs.forEach((p, i) => {
-          const pct = (p * 100).toFixed(2);
+        Object.entries(probs).forEach(([key, value]) => {
+          const pct = (value * 100).toFixed(2);
           html.push('<div class="prob-row">');
-          html.push(`<div class="prob-label">${i}</div>`);
+          html.push(`<div class="prob-label">${key}</div>`);
           html.push(`<progress value="${pct}" max="100"></progress>`);
           html.push(`<div style="width:3.5rem;text-align:right">${pct}%</div>`);
-          html.push('</div>');
+          html.push("</div>");
         });
 
-        html.push('</div>');
+        html.push("</div>");
 
-        resultEl.innerHTML = html.join('');
+        resultEl.innerHTML = html.join("");
       }
 
       function showError(el, message) {
         el.innerHTML = `<span style="color:crimson">${message}</span>`;
       }
 
-      fileForm.addEventListener('submit', async (e) => {
+      fileForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
         if (!file) return;
@@ -138,30 +214,30 @@
 
         try {
           const fd = new FormData();
-          fd.append('file', file);
+          fd.append("file", file);
 
           const res = await fetch(`${baseURL}/api/predict-file`, {
-            method: 'POST',
-            body: fd
+            method: "POST",
+            body: fd,
           });
 
           if (!res.ok) {
             const err = await res.json().catch(() => ({}));
-            showError(resultEl, err.error || 'Server error');
+            showError(resultEl, err.error || "Server error");
             return;
           }
 
           const data = await res.json();
           renderResult(data);
         } catch (err) {
-          showError(resultEl, err.message || 'Network error');
+          showError(resultEl, err.message || "Network error");
         } finally {
           fileSubmit.disabled = false;
-          fileStatus.textContent = '';
+          fileStatus.textContent = "";
         }
       });
 
-      ytForm.addEventListener('submit', async (e) => {
+      ytForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const url = ytUrl.value.trim();
         if (!url) return;
@@ -172,24 +248,24 @@
 
         try {
           const res = await fetch(`${baseURL}/api/predict-youtube`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
           });
 
           if (!res.ok) {
             const err = await res.json().catch(() => ({}));
-            showError(resultEl, err.error || 'Server error');
+            showError(resultEl, err.error || "Server error");
             return;
           }
 
           const data = await res.json();
           renderResult(data);
         } catch (err) {
-          showError(resultEl, err.message || 'Network error');
+          showError(resultEl, err.message || "Network error");
         } finally {
           ytSubmit.disabled = false;
-          ytStatus.textContent = '';
+          ytStatus.textContent = "";
         }
       });
     </script>
