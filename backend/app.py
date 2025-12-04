@@ -42,9 +42,11 @@ def predict_file():
     audio_bytes = file.read()
 
     y, sr = load_audio_from_mp3(audio_bytes)
-    x = preprocess_audio(y, sr)
-    preds = model.predict(x)[0]
-    idx = np.argmax(preds)
+    X = preprocess_audio(y, sr, scaler)
+    preds = model.predict(X)
+    avg_preds = np.mean(preds, axis=0)
+
+    idx = np.argmax(avg_preds)
 
     return jsonify({
         "genre": LABELS[idx],
@@ -59,9 +61,10 @@ def predict_youtube():
         return jsonify({"error": "Missing YouTube url"}), 400
 
     y, sr = load_audio_from_youtube(data["url"])
-    x = preprocess_audio(y, sr, scaler)
-    preds = model.predict(x)[0]
-    idx = np.argmax(preds)
+    X = preprocess_audio(y, sr, scaler)
+    preds = model.predict(X)
+    avg_preds = np.mean(preds, axis=0)
+    idx = np.argmax(avg_preds)
 
     return jsonify({
         "genre": LABELS[idx],
