@@ -44,7 +44,7 @@ def predict_file():
     y, sr = load_audio_from_mp3(audio_bytes)
     X = preprocess_audio(y, sr, scaler)
     preds = model.predict(X)
-    avg_preds = np.mean(preds, axis=0)
+    avg_preds = np.mean(preds, axis=0).tolist()
     dict_avg_preds = dict(zip(LABELS, avg_preds))
     idx = np.argmax(avg_preds)
 
@@ -63,7 +63,7 @@ def predict_youtube():
     y, sr = load_audio_from_youtube(data["url"])
     X = preprocess_audio(y, sr, scaler)
     preds = model.predict(X)
-    avg_preds = np.mean(preds, axis=0)
+    avg_preds = np.mean(preds, axis=0).tolist()
     dict_avg_preds = dict(zip(LABELS, avg_preds))
     idx = np.argmax(avg_preds)
 
