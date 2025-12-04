@@ -1,7 +1,7 @@
 import tensorflow as tf
-from utils.preprocess import preprocess_audio
-from utils.youtube import load_audio_from_youtube
-from utils.audio import load_audio_from_mp3
+from .utils.preprocess import preprocess_audio
+from .utils.youtube import load_audio_from_youtube
+from .utils.audio import load_audio_from_mp3
 from pathlib import Path
 import joblib
 import numpy as np
@@ -42,7 +42,7 @@ def predict_file():
     audio_bytes = file.read()
 
     y, sr = load_audio_from_mp3(audio_bytes)
-    x = preprocess_audio(y, sr)
+    x = preprocess_audio(y, sr, scaler)
     preds = model.predict(x)[0]
     idx = np.argmax(preds)
 
