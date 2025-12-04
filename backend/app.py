@@ -67,7 +67,3 @@ def predict_youtube():
         "genre": LABELS[idx],
         "probabilities": preds.tolist()
     })
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
