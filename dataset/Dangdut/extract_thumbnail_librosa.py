@@ -68,6 +68,6 @@ def main(source_dir, destination_dir):
 
 if __name__ == "__main__":
     source_dir = "formatted"
-    destination_dir = "thumnail-librosa"
+    destination_dir = "thumbnail-librosa"
 
     main(source_dir, destination_dir)
