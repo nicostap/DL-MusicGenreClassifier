@@ -1,20 +1,23 @@
-from flask import Flask, request, jsonify
 import tensorflow as tf
-import numpy as np
-import joblib
-from pathlib import Path
-
-from utils.audio import load_audio_from_mp3
-from utils.youtube import load_audio_from_youtube
 from utils.preprocess import preprocess_audio
+from utils.youtube import load_audio_from_youtube
+from utils.audio import load_audio_from_mp3
+from pathlib import Path
+import joblib
+import numpy as np
+from flask import Flask, request, jsonify
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend")
 
 current_script_path = Path(__file__).resolve()
 project_root = current_script_path.parent
 
-MODEL_PATH = project_root / "resources" / "models" / "mel_2048_cnn_lstm_model_d.h5"
-SCALER_PATH = project_root / "resources" / "scalers" / "scaler_aug_mel_2048_d.gz"
+MODEL_PATH = project_root / "resources" / \
+    "models" / "mel_2048_cnn_lstm_model_d.h5"
+SCALER_PATH = project_root / "resources" / \
+    "scalers" / "scaler_aug_mel_2048_d.gz"
 
 model = tf.keras.models.load_model(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
@@ -27,8 +30,7 @@ LABELS = [
 
 @app.route("/")
 def index():
-    # TO:DO Serve HTML
-    return {"status": "OK", "message": "Music genre classifier running"}
+    return app.send_static_file('index.html')
 
 
 @app.route("/api/predict-file", methods=["POST"])
