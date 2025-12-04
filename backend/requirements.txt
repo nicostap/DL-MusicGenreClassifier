@@ -5,3 +5,5 @@ pydub
 yt-dlp
 librosa
 soundfile
+joblib
+pathlib

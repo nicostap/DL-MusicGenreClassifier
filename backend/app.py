@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
+import joblib
+from pathlib import Path
 
 from utils.audio import load_audio_from_mp3
 from utils.youtube import load_audio_from_youtube
@@ -8,7 +10,12 @@ from utils.preprocess import preprocess_audio
 
 app = Flask(__name__)
 
-MODEL_PATH = "model"
+current_script_path = Path(__file__).resolve()
+project_root = current_script_path.parent
+
+MODEL_PATH = project_root / "resources" / "models" / "mel_2048_cnn_lstm_model_d.h5"
+SCALER_PATH = project_root / "resources" / "scaler" / "scaler_aug_mel_2048_d.gz"
+
 model = tf.keras.models.load_model(MODEL_PATH)
 LABELS = [
     "blues", "classical", "country", "disco", "hiphop",
@@ -49,7 +56,8 @@ def predict_youtube():
         return jsonify({"error": "Missing YouTube url"}), 400
 
     y, sr = load_audio_from_youtube(data["url"])
-    x = preprocess_audio(y, sr)
+    scaler = joblib.load(SCALER_PATH)
+    x = preprocess_audio(y, sr, scaler)
     preds = model.predict(x)[0]
     idx = np.argmax(preds)
 
