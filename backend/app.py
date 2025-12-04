@@ -14,9 +14,10 @@ current_script_path = Path(__file__).resolve()
 project_root = current_script_path.parent
 
 MODEL_PATH = project_root / "resources" / "models" / "mel_2048_cnn_lstm_model_d.h5"
-SCALER_PATH = project_root / "resources" / "scaler" / "scaler_aug_mel_2048_d.gz"
+SCALER_PATH = project_root / "resources" / "scalers" / "scaler_aug_mel_2048_d.gz"
 
 model = tf.keras.models.load_model(MODEL_PATH)
+scaler = joblib.load(SCALER_PATH)
 LABELS = [
     "blues", "classical", "country", "disco", "hiphop",
     "jazz", "metal", "pop", "reggae", "rock",
@@ -56,7 +57,6 @@ def predict_youtube():
         return jsonify({"error": "Missing YouTube url"}), 400
 
     y, sr = load_audio_from_youtube(data["url"])
-    scaler = joblib.load(SCALER_PATH)
     x = preprocess_audio(y, sr, scaler)
     preds = model.predict(x)[0]
     idx = np.argmax(preds)
