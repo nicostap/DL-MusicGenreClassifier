@@ -1,5 +1,6 @@
 import tensorflow as tf
 from .utils.preprocess import preprocess_audio
+from .utils.models import PositionalEmbedding
 from .utils.youtube import load_audio_from_youtube
 from .utils.audio import load_audio_from_mp3
 from pathlib import Path
@@ -13,13 +14,14 @@ app = Flask(__name__, static_folder="../frontend")
 
 current_script_path = Path(__file__).resolve()
 project_root = current_script_path.parent
-
+    
 MODEL_PATH = project_root / "resources" / \
-    "models" / "mel_2048_cnn_lstm_model_d.h5"
+    "models" / "mel_2048_multiscale_transformer_acc93.keras"
+    
 SCALER_PATH = project_root / "resources" / \
     "scalers" / "scaler_aug_mel_2048_d.gz"
 
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(MODEL_PATH, custom_objects={"PositionalEmbedding": PositionalEmbedding})
 scaler = joblib.load(SCALER_PATH)
 LABELS = [
     "blues", "classical", "country", "disco", "hiphop",
