@@ -11,11 +11,23 @@ def load_audio_from_youtube(url, target_sr=22050):
     ydl_opts = {
         "format": "bestaudio/best",
         "outtmpl": out_path,
-        "quiet": True,
+        "quiet": False,
+        "no_warnings": False,
+        "socket_timeout": 60,
+        "retries": 3,
+        "fragment_retries": 3,
+        "noplaylist": True,
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["android", "web"],
+                "skip": ["dash", "hls"]
+            }
+        },
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "wav",
         }],
+        "max_filesize": 50 * 1024 * 1024,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

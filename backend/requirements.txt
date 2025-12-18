@@ -7,3 +7,4 @@ librosa
 soundfile
 joblib
 pathlib
+flask-cors

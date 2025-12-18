@@ -7,10 +7,12 @@ from pathlib import Path
 import joblib
 import numpy as np
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__, static_folder="../frontend")
+CORS(app)
 
 current_script_path = Path(__file__).resolve()
 project_root = current_script_path.parent
