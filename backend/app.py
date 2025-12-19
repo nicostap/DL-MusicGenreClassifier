@@ -67,11 +67,11 @@ def predict_youtube():
     y, sr = load_audio_from_youtube(data["url"])
     X = preprocess_audio(y, sr, scaler)
     preds = model.predict(X)
-    pred = preds[0].tolist()
-    dict_preds = dict(zip(LABELS, pred))
-    idx = np.argmax(pred)
+    avg_preds = np.mean(preds, axis=0).tolist()
+    dict_avg_preds = dict(zip(LABELS, avg_preds))
+    idx = np.argmax(avg_preds)
 
     return jsonify({
         "genre": LABELS[idx],
-        "probabilities": dict_preds
+        "probabilities": dict_avg_preds
     })
